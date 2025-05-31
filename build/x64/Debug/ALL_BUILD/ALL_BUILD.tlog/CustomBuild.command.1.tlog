@@ -1,0 +1,10 @@
+^C:\USERS\ASTRI\DESKTOP\EGZAMINOUZDUOTIS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/astri/Desktop/egzaminoUzduotis -BC:/Users/astri/Desktop/egzaminoUzduotis/build --check-stamp-file C:/Users/astri/Desktop/egzaminoUzduotis/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

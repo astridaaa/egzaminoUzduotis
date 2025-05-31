@@ -13,6 +13,36 @@ struct keyValuePair{
     std::vector<int> lines;
 };
 
+bool domains(std::wstring segment, std::set<std::wstring> acceptableDomains){
+    return (acceptableDomains.find(segment)==acceptableDomains.end());}
+
+bool checkingURL(std::wstring word){
+    std::wstring line;
+    std::set<std::wstring> acceptableDomains;
+    std::wstringstream buffer;
+
+    std::wifstream file("tlds-alpha-by-domain.txt");
+     if(!file.is_open()){
+        throw std::runtime_error("Failo atidaryti nepavyko");}
+    buffer<<file.rdbuf();
+    file.close();
+    while(getline(buffer, line)){
+        std::wistringstream line2(line);
+        std::wstring word2;
+        while(line2>>word2){
+            acceptableDomains.insert(word2);}}
+    
+    std::wstring possibleDomain;
+    for(wchar_t symbol: word2){
+        if(symbol != '.' && symbol != '/'){
+            possibleDomain += symbol;}
+        else if(domains(possibleDomain, acceptableDomains)){
+            return true;}
+        else possibleDomain="";
+    }
+    return false;
+}
+
 bool suitableLetter(wchar_t let){
     return (std::isalpha(let, std::locale()));
 }
@@ -33,6 +63,7 @@ void readingFile(std::string fileName, std::map<std::wstring, std::vector<int>>&
         std::wistringstream line2(line);
         std::wstring word2;
         while(line2>>word2){
+            if()
             //TODO check whether an url
             std::wstring updatedWord;
             for(wchar_t letter: word2){
@@ -45,7 +76,6 @@ void readingFile(std::string fileName, std::map<std::wstring, std::vector<int>>&
             }
             else if(!updatedWord.empty()){allWords[updatedWord].push_back(count);}//dar patikrint ar tas word nera empty
         }
-
     }
 }
 
@@ -60,7 +90,8 @@ void outputCrossReference(std::map<std::wstring, std::vector<int>>& allWords, st
     for(auto& it: allWords){
         std::set<int> uniqueLines(it.second.begin(), it.second.end());
         out<<it.first<<": ";
-        for(auto i: uniqueLines){out << i << "eil, ";}
-        out<<std::endl;
+        for(auto i: uniqueLines){out << i << " ";}
+        if(uniqueLines.size()==1){out << "eilute"<<std::endl;}
+        else out << "eilutes"<<std::endl;
     }
 }

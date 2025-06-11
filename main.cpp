@@ -7,12 +7,13 @@ int main() {
     std::string fileName = "input/article.txt";
     std::wifstream article(fileName);
     std::set<std::wstring> acceptableDomains;
+    std::set<std::wstring> wordsWithTer;
     readingDomains("input/tlds-alpha-by-domain.txt", acceptableDomains); //reading acceptable domains from a file
 
-    std::vector<std::wstring> URLtoPrint;
+    std::vector<std::wstring> URLtoPrint; //galejau ir i seta det kad nesikartotu
     article.imbue(std::locale()); //imbedding locale
     
-    readingFile(fileName, allwordsFinal, URLtoPrint, acceptableDomains);
+    readingFile(fileName, allwordsFinal, URLtoPrint, acceptableDomains, wordsWithTer);
 
     std::wofstream out;
     out.imbue(std::locale());
@@ -26,6 +27,10 @@ int main() {
 
     out.open("output/URL.txt");
     URLSprint(URLtoPrint, out);
+    out.close();
+
+    out.open("output/TER.txt");
+    TERprint(wordsWithTer, out);
     out.close();
  
     return 0;
